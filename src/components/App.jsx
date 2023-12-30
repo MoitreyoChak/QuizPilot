@@ -7,75 +7,46 @@ import Timer from "./Timer";
 import NextButton from "./NextButton";
 import Main from "./Main";
 import FinishScreen from "./FinishScreen";
+import { useQuiz } from ".././quizContext";
 
 import reducer from ".././reducer";
 
-import questions from "../../public/questions";
-import { useReducer } from "react";
-
-const numQuestions = questions.reduce((sum) => sum + 1, 0);
-const totalPossibleMarks = questions.reduce(
-  (marks, question) => marks + question.points,
-  0
-);
-const ALLOWED_TIME = 5;
+import { createContext, useContext, useReducer } from "react";
 
 const App = () => {
-  const initialState = {
-    status: "init",
-    questionNumber: 0,
-    selectedOption: -1,
-    totalMarksObtained: 0,
-    highestScoreObtained: 0,
-    timeRemaining: ALLOWED_TIME,
-  };
-  const [state, dispatch] = useReducer(reducer, initialState);
+  // const {
+  //   status,
+  //   questionNumber,
+  //   selectedOption,
+  //   totalMarksObtained,
+  //   highestScoreObtained,
+  //   timeRemaining,
+  // } = state;
+
   const {
-    status,
-    questionNumber,
-    selectedOption,
-    totalMarksObtained,
-    highestScoreObtained,
-    timeRemaining,
-  } = state;
+    state: { status },
+  } = useQuiz();
 
   return (
     <div className="app">
       <Header />
-      {status == "init" && <StartScreen dispatch={dispatch} />}
+      {status == "init" && <StartScreen />}
       {status == "running" && (
         <Main>
-          <Progress
-            totalMarksObtained={totalMarksObtained}
-            questionNumber={questionNumber + 1}
-            numQuestions={numQuestions}
-            totalPossibleMarks={totalPossibleMarks}
-          />
-          <Question
-            selectedOption={selectedOption}
-            question={questions[questionNumber]}
-            dispatch={dispatch}
-          />
+          <Progress />
+          <Question />
           <Footer>
-            <Timer timeRemaining={timeRemaining} dispatch={dispatch} />
-            <NextButton
-              dispatch={dispatch}
-              selectedOption={selectedOption}
-              questionNumber={questionNumber + 1}
-              numQuestions={numQuestions}
-            />
+            <Timer />
+            <NextButton />
           </Footer>
         </Main>
       )}
-      {status == "finished" && (
-        <FinishScreen
-          dispatch={dispatch}
-          totalMarksObtained={totalMarksObtained}
-          totalPossibleMarks={totalPossibleMarks}
-          highestScoreObtained={highestScoreObtained}
-        />
-      )}
+      {status == "finished" && <FinishScreen />}
     </div>
   );
 };
+// function Main({ children }) {
+//   console.log(10);
+//   return <main className="main">{children}</main>;
+// }
 export default App;

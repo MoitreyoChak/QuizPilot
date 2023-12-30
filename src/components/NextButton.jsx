@@ -1,9 +1,12 @@
-function NextButton({
-  dispatch,
-  questionNumber,
-  numQuestions,
-  selectedOption,
-}) {
+import { useQuiz, useQuizDispatch } from "../quizContext";
+
+function NextButton() {
+  const dispatch = useQuizDispatch();
+  const {
+    state: { questionNumber, selectedOption },
+    numQuestions,
+  } = useQuiz();
+
   const handleClickNext = () => {
     dispatch({
       type: "nextQuestion",
@@ -14,7 +17,7 @@ function NextButton({
       type: "finish quiz",
     });
   };
-  if (questionNumber == numQuestions) {
+  if (questionNumber + 1 == numQuestions) {
     return (
       <button
         className="btn btn-ui"

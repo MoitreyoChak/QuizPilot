@@ -46,6 +46,7 @@ const reducer = (state, action) => {
         questionNumber: 0,
         selectedOption: -1,
         totalMarksObtained: 0,
+        timeRemaining: payload,
       };
     case "tick":
       return {
@@ -53,8 +54,10 @@ const reducer = (state, action) => {
         timeRemaining: timeRemaining - 1,
         status: timeRemaining == 0 ? "finished" : status,
         highestScoreObtained:
-          highestScoreObtained < totalMarksObtained
-            ? totalMarksObtained
+          timeRemaining == 0
+            ? highestScoreObtained < totalMarksObtained
+              ? totalMarksObtained
+              : highestScoreObtained
             : highestScoreObtained,
       };
 

@@ -1,9 +1,13 @@
-function FinishScreen({
-  totalMarksObtained,
-  totalPossibleMarks,
-  highestScoreObtained,
-  dispatch,
-}) {
+import { useQuiz, useQuizDispatch } from "../quizContext";
+
+function FinishScreen() {
+  const dispatch = useQuizDispatch();
+  const {
+    state: { totalMarksObtained, highestScoreObtained },
+    totalPossibleMarks,
+    ALLOWED_TIME,
+  } = useQuiz();
+
   return (
     <>
       <p className="result">
@@ -16,7 +20,7 @@ function FinishScreen({
       <button
         className="btn btn-ui"
         onClick={() => {
-          dispatch({ type: "restart" });
+          dispatch({ type: "restart", payload: ALLOWED_TIME });
         }}
       >
         Restart quiz

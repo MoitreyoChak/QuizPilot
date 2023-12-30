@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useQuiz, useQuizDispatch } from "../quizContext";
 
-function Options({ question, selectedOption, dispatch }) {
+function Options({ question }) {
+  const dispatch = useQuizDispatch();
+  const {
+    state: { selectedOption },
+  } = useQuiz();
+
   const { options, correctOption } = question;
 
   const handleClick = (i) => {
